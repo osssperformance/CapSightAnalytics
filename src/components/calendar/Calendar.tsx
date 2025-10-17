@@ -100,13 +100,17 @@ export function Calendar({ events }: CalendarProps) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [calendar])
 
+  // Determine navigation functions based on view
+  const handlePrevious = view === 'week' ? calendar.goToPreviousWeek : calendar.goToPreviousMonth
+  const handleNext = view === 'week' ? calendar.goToNextWeek : calendar.goToNextMonth
+
   return (
     <div ref={containerRef} className="h-full flex flex-col" tabIndex={0} role="application" aria-label="Event Calendar">
       <CalendarHeader
         year={calendar.year}
         month={monthName}
-        onPrevious={calendar.goToPreviousMonth}
-        onNext={calendar.goToNextMonth}
+        onPrevious={handlePrevious}
+        onNext={handleNext}
         onToday={calendar.goToToday}
       />
 

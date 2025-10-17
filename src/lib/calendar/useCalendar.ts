@@ -12,6 +12,8 @@ export interface UseCalendarReturn {
   focusedDate: CalendarDate | null
   goToNextMonth: () => void
   goToPreviousMonth: () => void
+  goToNextWeek: () => void
+  goToPreviousWeek: () => void
   goToToday: () => void
   goToMonth: (year: number, month: number) => void
   selectDate: (date: CalendarDate) => void
@@ -47,6 +49,26 @@ export function useCalendar(initialYear?: number, initialMonth?: number): UseCal
       setMonth(12)
     } else {
       setMonth(month - 1)
+    }
+  }
+
+  const goToNextWeek = () => {
+    if (!focusedDate) return
+    const newDate = focusedDate.add({ days: 7 })
+    setFocusedDate(newDate)
+    if (newDate.month !== month || newDate.year !== year) {
+      setYear(newDate.year)
+      setMonth(newDate.month)
+    }
+  }
+
+  const goToPreviousWeek = () => {
+    if (!focusedDate) return
+    const newDate = focusedDate.subtract({ days: 7 })
+    setFocusedDate(newDate)
+    if (newDate.month !== month || newDate.year !== year) {
+      setYear(newDate.year)
+      setMonth(newDate.month)
     }
   }
 
@@ -104,6 +126,8 @@ export function useCalendar(initialYear?: number, initialMonth?: number): UseCal
     focusedDate,
     goToNextMonth,
     goToPreviousMonth,
+    goToNextWeek,
+    goToPreviousWeek,
     goToToday,
     goToMonth,
     selectDate,
