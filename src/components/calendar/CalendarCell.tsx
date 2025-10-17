@@ -1,0 +1,105 @@
+'use client'
+
+import { CalendarDay } from '@/lib/calendar/utils'
+import { useState } from 'react'
+
+interface Event {
+  id: string
+  title: string
+  event_date: string
+  event_type: string
+  company_name: string
+  asx_code: string
+  importance_score?: number
+}
+
+interface CalendarCellProps {
+  day: CalendarDay
+  events: Event[]
+}
+
+export function CalendarCell({ day, events }: CalendarCellProps) {
+  const [isHovered, setIsHovered] = useState(false)
+
+  // Show max 3 events, then "+X more"
+  const visibleEvents = events.slice(0, 3)
+  const remainingCount = events.length - 3
+
+  return (
+    <div
+      className={`
+        relative min-h-[120px] border-r border-b border-gray-200 p-2
+        ${!day.isCurrentMonth ? 'bg-gray-50' : 'bg-white'}
+        ${day.isToday ? 'bg-blue-50' : ''}
+        hover:bg-gray-50 transition-colors cursor-pointer
+      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Date number */}
+      <div className="flex items-center justify-between mb-1">
+        <span
+          className={`
+            inline-flex items-center justify-center w-7 h-7 text-sm font-medium rounded-full
+            ${day.isToday ? 'bg-primary text-white' : ''}
+            ${!day.isCurrentMonth ? 'text-gray-400' : 'text-gray-900'}
+          `}
+        >
+          {day.date.day}
+        </span>
+
+        {/* Event count badge */}
+        {events.length > 0 && (
+          <span className="text-xs font-semibold text-gray-500">
+            {events.length} {events.length === 1 ? 'event' : 'events'}
+          </span>
+        )}
+      </div>
+
+      {/* Events list */}
+      <div className="space-y-1">
+        {visibleEvents.map((event) => (
+          <div
+            key={event.id}
+            className={`
+              text-xs p-1.5 rounded border-l-2 transition-all
+              ${getEventColor(event.event_type)}
+              ${isHovered ? 'shadow-sm' : ''}
+            `}
+          >
+            <div className="font-semibold truncate text-gray-900">
+              {event.asx_code}
+            </div>
+            <div className="text-gray-600 truncate">{event.title}</div>
+          </div>
+        ))}
+
+        {remainingCount > 0 && (
+          <button className="text-xs text-primary font-medium hover:underline">
+            +{remainingCount} more
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Helper function to get color based on event type
+function getEventColor(eventType: string): string {
+  const colors: Record<string, string> = {
+    drilling_results: 'bg-blue-50 border-blue-500',
+    assay_results: 'bg-purple-50 border-purple-500',
+    exploration_update: 'bg-green-50 border-green-500',
+    jorc_resource: 'bg-orange-50 border-orange-500',
+    resource_update: 'bg-yellow-50 border-yellow-500',
+    production_update: 'bg-indigo-50 border-indigo-500',
+    feasibility_study: 'bg-pink-50 border-pink-500',
+    permits_approvals: 'bg-teal-50 border-teal-500',
+    capital_raise: 'bg-red-50 border-red-500',
+    quarterly_report: 'bg-cyan-50 border-cyan-500',
+    agm_egm: 'bg-gray-50 border-gray-500',
+    other: 'bg-slate-50 border-slate-500',
+  }
+
+  return colors[eventType] || colors.other
+}

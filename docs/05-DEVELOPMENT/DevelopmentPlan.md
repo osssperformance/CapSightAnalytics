@@ -64,14 +64,14 @@
 **Tasks:**
 
 **Monday (Day 1):**
-- [ ] Create Supabase project (production + staging)
-- [ ] Initialize Next.js 15 repo with TypeScript
-- [ ] Set up Tailwind + shadcn/ui
-- [ ] Configure Vercel deployment
-- [ ] Set up GitHub repo + branch protection
+- [X] Create Supabase project (production + staging)
+- [X] Initialize Next.js 15 repo with TypeScript
+- [X] Set up Tailwind + shadcn/ui
+- [X] Configure Vercel deployment
+- [X] Set up GitHub repo + branch protection
 
 **Tuesday (Day 2):**
-- [ ] Design database schema (companies, events, users, commodities)
+- [X] Design database schema (companies, events, users, commodities)
 - [ ] Create migration files
 - [ ] Set up Row Level Security policies
 - [ ] Create seed data (10 sample companies)
@@ -100,17 +100,17 @@
 ---
 
 ### Week 2: Custom Calendar Foundationn
-**Monday:**n
-- [ ] Install calendar dependencies (@internationalized/date, react-aria, framer-motion)n
-- [ ] Set up headless calendar logic (date math, accessibility)n
-- [ ] Create basic month grid structure (no events yet)n
+**Monday:**
+- [ ] Install calendar dependencies (@internationalized/date, react-aria, framer-motion)
+- [ ] Set up headless calendar logic (date math, accessibility)
+- [ ] Create basic month grid structure (no events yet)
 - [ ] Implement keyboard navigation (arrow keys, tab)n
-n
-**Tuesday:**n
-- [ ] Build custom month view componentn
-- [ ] Implement date cell renderingn
+
+**Tuesday:**
+- [ ] Build custom month view component
+- [ ] Implement date cell rendering
 - [ ] Add today indicator and selection staten
-- [ ] Test accessibility (screen readers, keyboard)n- [ ] Implement month view
+- [ ] Test accessibility (screen readers, keyboard)- [ ] Implement month view
 - [ ] Implement week view
 - [ ] Implement list view
 - [ ] Add view switcher
@@ -138,38 +138,38 @@ n
 ---
 
 ### Week 3: Advanced Calendar Featuresn
-n
+
 **Monday:**n
-- [ ] Build filter panel UI (sidebar)n
-- [ ] Multi-dimensional filtering (commodities, event types, date range)n
-- [ ] Real-time filter updates (optimistic UI)n
-- [ ] Filter state persistence (URL params)n
-n
+- [ ] Build filter panel UI (sidebar)
+- [ ] Multi-dimensional filtering (commodities, event types, date range)
+- [ ] Real-time filter updates (optimistic UI)
+- [ ] Filter state persistence (URL params)
+
 **Tuesday:**n
-- [ ] Smart event clustering algorithmn
-- [ ] Cluster visualization on mobilen
-- [ ] Expand/collapse cluster animationsn
-- [ ] Gesture support (swipe, pinch-to-zoom)n
-n
+- [ ] Smart event clustering algorithm
+- [ ] Cluster visualization on mobile
+- [ ] Expand/collapse cluster animations
+- [ ] Gesture support (swipe, pinch-to-zoom)
+
 **Wednesday:**n
-- [ ] Build heatmap overlay (density visualization)n
+- [ ] Build heatmap overlay (density visualization)
 - [ ] Color-code days by event densityn
-- [ ] Critical Minerals heat intensityn
-- [ ] Toggle heatmap on/offn
-n
+- [ ] Critical Minerals heat intensit
+- [ ] Toggle heatmap on/off
+
 **Thursday:**n
-- [ ] Command palette (Cmd+K)n
-- [ ] Quick actions (jump to date, filter, etc.)n
-- [ ] Keyboard shortcuts systemn
-- [ ] Search integrationn
-n
+- [ ] Command palette (Cmd+K)
+- [ ] Quick actions (jump to date, filter, etc.)
+- [ ] Keyboard shortcuts system
+- [ ] Search integration
+
 **Friday:**n
-- [ ] Timeline scrubber with previewn
-- [ ] Drag to scrub through monthsn
-- [ ] Preview tooltip on hovern
-- [ ] Mobile testing + bug fixesn
+- [ ] Timeline scrubber with preview
+- [ ] Drag to scrub through months
+- [ ] Preview tooltip on hover
+- [ ] Mobile testing + bug fixes
 - [ ] Deploy + demon
-n
+
 **Deliverable:** Production-ready custom calendar with advanced featuresn
 ---
 
