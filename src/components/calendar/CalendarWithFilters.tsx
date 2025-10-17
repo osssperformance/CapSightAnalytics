@@ -32,7 +32,6 @@ export function CalendarWithFilters({ events, commodities }: CalendarWithFilters
     const eventTypesParam = searchParams.get('eventTypes')
     const startDateParam = searchParams.get('startDate')
     const endDateParam = searchParams.get('endDate')
-    const criticalMineralsParam = searchParams.get('criticalMinerals')
 
     return {
       commodities: commoditiesParam ? commoditiesParam.split(',') : [],
@@ -41,7 +40,6 @@ export function CalendarWithFilters({ events, commodities }: CalendarWithFilters
         start: startDateParam || null,
         end: endDateParam || null,
       },
-      criticalMinerals: criticalMineralsParam === 'true',
     }
   }
 
@@ -65,10 +63,6 @@ export function CalendarWithFilters({ events, commodities }: CalendarWithFilters
 
     if (filters.dateRange.end) {
       params.set('endDate', filters.dateRange.end)
-    }
-
-    if (filters.criticalMinerals) {
-      params.set('criticalMinerals', 'true')
     }
 
     const queryString = params.toString()

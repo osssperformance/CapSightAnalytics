@@ -6,7 +6,6 @@ export interface CalendarFilters {
   commodities: string[]
   eventTypes: string[]
   dateRange: { start: string | null; end: string | null }
-  criticalMinerals: boolean
 }
 
 interface FilterPanelProps {
@@ -29,11 +28,6 @@ const EVENT_TYPES = [
   { value: 'quarterly_report', label: 'Quarterly Report' },
   { value: 'agm_egm', label: 'AGM/EGM' },
   { value: 'other', label: 'Other' },
-]
-
-const CRITICAL_MINERALS = [
-  'Lithium', 'Rare Earths', 'Cobalt', 'Nickel', 'Graphite',
-  'Copper', 'Manganese', 'Vanadium', 'PGMs'
 ]
 
 export function FilterPanel({ filters, onFiltersChange, availableCommodities, onClose }: FilterPanelProps) {
@@ -59,26 +53,11 @@ export function FilterPanel({ filters, onFiltersChange, availableCommodities, on
     onFiltersChange({ ...filters, eventTypes: newEventTypes })
   }
 
-  const toggleCriticalMinerals = () => {
-    const newCriticalMinerals = !filters.criticalMinerals
-
-    if (newCriticalMinerals) {
-      // Add all critical minerals to commodities filter
-      const newCommodities = Array.from(new Set([...filters.commodities, ...CRITICAL_MINERALS]))
-      onFiltersChange({ ...filters, commodities: newCommodities, criticalMinerals: true })
-    } else {
-      // Remove critical minerals from commodities filter
-      const newCommodities = filters.commodities.filter(c => !CRITICAL_MINERALS.includes(c))
-      onFiltersChange({ ...filters, commodities: newCommodities, criticalMinerals: false })
-    }
-  }
-
   const clearAllFilters = () => {
     onFiltersChange({
       commodities: [],
       eventTypes: [],
       dateRange: { start: null, end: null },
-      criticalMinerals: false,
     })
   }
 
@@ -123,24 +102,6 @@ export function FilterPanel({ filters, onFiltersChange, availableCommodities, on
 
       {/* Filters */}
       <div className="flex-1 overflow-auto">
-        {/* Critical Minerals Toggle */}
-        <div className="p-4 border-b border-gray-200 bg-blue-50">
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={filters.criticalMinerals}
-              onChange={toggleCriticalMinerals}
-              className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-            />
-            <div>
-              <div className="font-semibold text-gray-900">Critical Minerals</div>
-              <div className="text-xs text-gray-600">
-                Li, REE, Co, Ni, Graphite, Cu, Mn, V, PGMs
-              </div>
-            </div>
-          </label>
-        </div>
-
         {/* Commodities */}
         <div className="border-b border-gray-200">
           <button
