@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { UserMenu } from '@/components/auth/UserMenu'
-import { Calendar } from '@/components/calendar/Calendar'
+import { CalendarWithFilters } from '@/components/calendar/CalendarWithFilters'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
@@ -33,16 +33,26 @@ export default async function CalendarPage() {
     console.error('Error fetching events:', error)
   }
 
+  // For now, use a simple commodity list - we'll enhance this later when we understand the schema better
+  const allCommodities = [
+    'Lithium', 'Rare Earths', 'Cobalt', 'Nickel', 'Graphite',
+    'Copper', 'Manganese', 'Vanadium', 'PGMs', 'Gold', 'Silver',
+    'Zinc', 'Lead', 'Uranium', 'Iron Ore', 'Coal'
+  ]
+
   // Format events for the calendar
-  const formattedEvents = (events || []).map((event: any) => ({
-    id: event.id,
-    title: event.title,
-    event_date: event.event_date,
-    event_type: event.event_type,
-    asx_code: event.companies?.asx_code || 'N/A',
-    company_name: event.companies?.company_name || 'Unknown Company',
-    importance_score: event.importance_score,
-  }))
+  const formattedEvents = (events || []).map((event: any) => {
+    return {
+      id: event.id,
+      title: event.title,
+      event_date: event.event_date,
+      event_type: event.event_type,
+      asx_code: event.companies?.asx_code || 'N/A',
+      company_name: event.companies?.company_name || 'Unknown Company',
+      importance_score: event.importance_score,
+      commodities: [], // Will be populated later when we have the right schema
+    }
+  })
 
   return (
     <div className="h-screen flex flex-col bg-gray-50">
@@ -74,7 +84,7 @@ export default async function CalendarPage() {
       {/* Calendar - Full height remaining space with padding */}
       <main className="flex-1 overflow-hidden p-[50px]">
         <div className="h-full bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <Calendar events={formattedEvents} />
+          <CalendarWithFilters events={formattedEvents} commodities={allCommodities} />
         </div>
       </main>
     </div>
