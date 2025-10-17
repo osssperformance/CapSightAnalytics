@@ -16,9 +16,12 @@ interface Event {
 interface CalendarCellProps {
   day: CalendarDay
   events: Event[]
+  isFocused: boolean
+  isSelected: boolean
+  onSelect: () => void
 }
 
-export function CalendarCell({ day, events }: CalendarCellProps) {
+export function CalendarCell({ day, events, isFocused, isSelected, onSelect }: CalendarCellProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   // Show max 3 events, then "+X more"
@@ -31,10 +34,17 @@ export function CalendarCell({ day, events }: CalendarCellProps) {
         relative min-h-[120px] border-r border-b border-gray-200 p-2
         ${!day.isCurrentMonth ? 'bg-gray-50' : 'bg-white'}
         ${day.isToday ? 'bg-blue-50' : ''}
+        ${isSelected ? 'bg-primary/10 ring-2 ring-primary ring-inset' : ''}
+        ${isFocused && !isSelected ? 'ring-2 ring-gray-400 ring-inset' : ''}
         hover:bg-gray-50 transition-colors cursor-pointer
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onSelect}
+      role="button"
+      tabIndex={isFocused ? 0 : -1}
+      aria-selected={isSelected}
+      aria-label={`${day.date.day} ${events.length} events`}
     >
       {/* Date number */}
       <div className="flex items-center justify-between mb-1">

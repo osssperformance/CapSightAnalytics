@@ -1,5 +1,6 @@
 'use client'
 
+import { CalendarDate } from '@internationalized/date'
 import { CalendarDay } from '@/lib/calendar/utils'
 import { CalendarCell } from './CalendarCell'
 
@@ -17,9 +18,12 @@ interface CalendarGridProps {
   days: CalendarDay[]
   dayNames: string[]
   eventsByDate: Record<string, Event[]>
+  selectedDate: CalendarDate | null
+  focusedDate: CalendarDate | null
+  onSelectDate: (date: CalendarDate) => void
 }
 
-export function CalendarGrid({ days, dayNames, eventsByDate }: CalendarGridProps) {
+export function CalendarGrid({ days, dayNames, eventsByDate, selectedDate, focusedDate, onSelectDate }: CalendarGridProps) {
   return (
     <div className="flex-1 flex flex-col bg-white">
       {/* Day names header */}
@@ -40,11 +44,24 @@ export function CalendarGrid({ days, dayNames, eventsByDate }: CalendarGridProps
           const dateKey = `${day.date.year}-${String(day.date.month).padStart(2, '0')}-${String(day.date.day).padStart(2, '0')}`
           const eventsForDay = eventsByDate[dateKey] || []
 
+          const isFocused = focusedDate &&
+            focusedDate.year === day.date.year &&
+            focusedDate.month === day.date.month &&
+            focusedDate.day === day.date.day
+
+          const isSelected = selectedDate &&
+            selectedDate.year === day.date.year &&
+            selectedDate.month === day.date.month &&
+            selectedDate.day === day.date.day
+
           return (
             <CalendarCell
               key={index}
               day={day}
               events={eventsForDay}
+              isFocused={isFocused}
+              isSelected={isSelected}
+              onSelect={() => onSelectDate(day.date)}
             />
           )
         })}
