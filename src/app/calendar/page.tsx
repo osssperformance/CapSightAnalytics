@@ -12,7 +12,7 @@ export default async function CalendarPage() {
     redirect('/login')
   }
 
-  // Fetch all published events with company information
+  // Fetch all published events with company and commodity information
   const { data: events, error } = await supabase
     .from('events')
     .select(`
@@ -23,7 +23,11 @@ export default async function CalendarPage() {
       importance_score,
       companies (
         asx_code,
-        company_name
+        company_name,
+        primary_commodity,
+        secondary_commodities,
+        is_critical_minerals,
+        critical_minerals_list
       )
     `)
     .eq('is_published', true)
@@ -33,15 +37,35 @@ export default async function CalendarPage() {
     console.error('Error fetching events:', error)
   }
 
-  // For now, use a simple commodity list - we'll enhance this later when we understand the schema better
-  const allCommodities = [
-    'Lithium', 'Rare Earths', 'Cobalt', 'Nickel', 'Graphite',
-    'Copper', 'Manganese', 'Vanadium', 'PGMs', 'Gold', 'Silver',
-    'Zinc', 'Lead', 'Uranium', 'Iron Ore', 'Coal'
-  ]
+  // Get all unique commodities from companies
+  const allCommoditiesSet = new Set<string>()
+  events?.forEach((event: any) => {
+    if (event.companies?.primary_commodity) {
+      allCommoditiesSet.add(event.companies.primary_commodity)
+    }
+    if (event.companies?.secondary_commodities) {
+      event.companies.secondary_commodities.forEach((c: string) => allCommoditiesSet.add(c))
+    }
+    if (event.companies?.critical_minerals_list) {
+      event.companies.critical_minerals_list.forEach((c: string) => allCommoditiesSet.add(c))
+    }
+  })
+  const allCommodities = Array.from(allCommoditiesSet).sort()
 
   // Format events for the calendar
   const formattedEvents = (events || []).map((event: any) => {
+    const commodities: string[] = []
+
+    if (event.companies?.primary_commodity) {
+      commodities.push(event.companies.primary_commodity)
+    }
+    if (event.companies?.secondary_commodities) {
+      commodities.push(...event.companies.secondary_commodities)
+    }
+    if (event.companies?.critical_minerals_list) {
+      commodities.push(...event.companies.critical_minerals_list)
+    }
+
     return {
       id: event.id,
       title: event.title,
@@ -50,7 +74,7 @@ export default async function CalendarPage() {
       asx_code: event.companies?.asx_code || 'N/A',
       company_name: event.companies?.company_name || 'Unknown Company',
       importance_score: event.importance_score,
-      commodities: [], // Will be populated later when we have the right schema
+      commodities: Array.from(new Set(commodities)), // Remove duplicates
     }
   })
 
