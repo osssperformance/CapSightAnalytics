@@ -73,21 +73,21 @@ After adding DNS records:
 
 Send a test welcome email:
 ```bash
-curl -X POST http://localhost:3001/api/test-email \
+curl -X POST http://localhost:3050/api/test-email \
   -H "Content-Type: application/json" \
   -d '{"type": "welcome", "email": "your@email.com"}'
 ```
 
 Send a test digest email:
 ```bash
-curl -X POST http://localhost:3001/api/test-email \
+curl -X POST http://localhost:3050/api/test-email \
   -H "Content-Type: application/json" \
   -d '{"type": "digest", "email": "your@email.com"}'
 ```
 
 ### Option 2: Sign Up Flow
 
-1. Visit http://localhost:3001/login
+1. Visit http://localhost:3050/login
 2. Sign up with your email
 3. The welcome email should be sent automatically (once we hook it up)
 

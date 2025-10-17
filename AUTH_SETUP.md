@@ -23,16 +23,16 @@ To test the authentication flow, you need to configure a few settings in your Su
 
 1. Navigate to **Authentication** → **URL Configuration**
 2. Set **Site URL** to:
-   - Development: `http://localhost:3001`
+   - Development: `http://localhost:3050`
    - Production: `https://capsightanalytics.com` (when ready)
 3. Add **Redirect URLs**:
-   - `http://localhost:3001/auth/callback`
+   - `http://localhost:3050/auth/callback`
    - `https://capsightanalytics.com/auth/callback` (when ready)
    - Your Vercel preview URLs (e.g., `https://*.vercel.app/auth/callback`)
 
 ### 4. Test the Authentication Flow
 
-1. Visit http://localhost:3001
+1. Visit http://localhost:3050
 2. Click **Sign in** button
 3. Enter your email address
 4. Check your email for the magic link
@@ -54,7 +54,7 @@ To test the authentication flow, you need to configure a few settings in your Su
 ### Testing Checklist
 
 - [ ] Supabase Email provider enabled
-- [ ] Site URL configured (http://localhost:3001)
+- [ ] Site URL configured (http://localhost:3050)
 - [ ] Redirect URLs configured
 - [ ] Magic link email sends successfully
 - [ ] Magic link redirects to /auth/callback
