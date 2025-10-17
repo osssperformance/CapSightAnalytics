@@ -1,10 +1,14 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { CalendarDate, startOfWeek, endOfWeek } from '@internationalized/date'
 import { useCalendar } from '@/lib/calendar/useCalendar'
 import { getMonthName, getDayNames } from '@/lib/calendar/utils'
 import { CalendarGrid } from './CalendarGrid'
 import { CalendarHeader } from './CalendarHeader'
+import { MonthView } from './MonthView'
+import { WeekView } from './WeekView'
+import { ListView } from './ListView'
 
 interface Event {
   id: string
@@ -20,11 +24,14 @@ interface CalendarProps {
   events: Event[]
 }
 
+type ViewType = 'month' | 'week' | 'list'
+
 export function Calendar({ events }: CalendarProps) {
   const calendar = useCalendar()
   const monthName = getMonthName(calendar.month)
   const dayNames = getDayNames()
   const containerRef = useRef<HTMLDivElement>(null)
+  const [view, setView] = useState<ViewType>('month')
 
   // Group events by date (YYYY-MM-DD format)
   const eventsByDate = events.reduce((acc, event) => {
@@ -35,6 +42,17 @@ export function Calendar({ events }: CalendarProps) {
     acc[dateKey].push(event)
     return acc
   }, {} as Record<string, Event[]>)
+
+  // Get current week days for week view
+  const getWeekDays = (): CalendarDate[] => {
+    const today = calendar.focusedDate || new CalendarDate(calendar.year, calendar.month, 1)
+    const start = startOfWeek(today, 'en-US')
+    const days: CalendarDate[] = []
+    for (let i = 0; i < 7; i++) {
+      days.push(start.add({ days: i }))
+    }
+    return days
+  }
 
   // Keyboard navigation
   useEffect(() => {
@@ -92,14 +110,70 @@ export function Calendar({ events }: CalendarProps) {
         onToday={calendar.goToToday}
       />
 
-      <CalendarGrid
-        days={calendar.days}
-        dayNames={dayNames}
-        eventsByDate={eventsByDate}
-        selectedDate={calendar.selectedDate}
-        focusedDate={calendar.focusedDate}
-        onSelectDate={calendar.selectDate}
-      />
+      {/* View Switcher */}
+      <div className="flex items-center gap-2 px-6 py-3 bg-white border-b border-gray-200">
+        <button
+          onClick={() => setView('month')}
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+            view === 'month'
+              ? 'bg-primary text-white'
+              : 'text-gray-700 hover:bg-gray-100'
+          }`}
+          aria-pressed={view === 'month'}
+        >
+          Month
+        </button>
+        <button
+          onClick={() => setView('week')}
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+            view === 'week'
+              ? 'bg-primary text-white'
+              : 'text-gray-700 hover:bg-gray-100'
+          }`}
+          aria-pressed={view === 'week'}
+        >
+          Week
+        </button>
+        <button
+          onClick={() => setView('list')}
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+            view === 'list'
+              ? 'bg-primary text-white'
+              : 'text-gray-700 hover:bg-gray-100'
+          }`}
+          aria-pressed={view === 'list'}
+        >
+          List
+        </button>
+      </div>
+
+      {/* Render active view */}
+      {view === 'month' && (
+        <MonthView
+          days={calendar.days}
+          eventsByDate={eventsByDate}
+          selectedDate={calendar.selectedDate}
+          focusedDate={calendar.focusedDate}
+          onSelectDate={calendar.selectDate}
+        />
+      )}
+
+      {view === 'week' && (
+        <WeekView
+          weekDays={getWeekDays()}
+          eventsByDate={eventsByDate}
+          selectedDate={calendar.selectedDate}
+          onSelectDate={calendar.selectDate}
+        />
+      )}
+
+      {view === 'list' && (
+        <ListView
+          events={events}
+          selectedDate={calendar.selectedDate}
+          onSelectDate={calendar.selectDate}
+        />
+      )}
     </div>
   )
 }

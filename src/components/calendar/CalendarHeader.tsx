@@ -12,12 +12,13 @@ export function CalendarHeader({ year, month, onPrevious, onNext, onToday }: Cal
   return (
     <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
       <div className="flex items-center gap-4">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-bold text-gray-900" aria-live="polite" aria-atomic="true">
           {month} {year}
         </h2>
         <button
           onClick={onToday}
           className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          aria-label="Go to today's date"
         >
           Today
         </button>
