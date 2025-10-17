@@ -9,6 +9,7 @@ import { CalendarHeader } from './CalendarHeader'
 import { MonthView } from './MonthView'
 import { WeekView } from './WeekView'
 import { ListView } from './ListView'
+import { EventDetailModal } from './EventDetailModal'
 
 interface Event {
   id: string
@@ -32,6 +33,18 @@ export function Calendar({ events }: CalendarProps) {
   const dayNames = getDayNames()
   const containerRef = useRef<HTMLDivElement>(null)
   const [view, setView] = useState<ViewType>('month')
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleEventClick = (event: Event) => {
+    setSelectedEvent(event)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedEvent(null)
+  }
 
   // Group events by date (YYYY-MM-DD format)
   const eventsByDate = events.reduce((acc, event) => {
@@ -159,6 +172,7 @@ export function Calendar({ events }: CalendarProps) {
           selectedDate={calendar.selectedDate}
           focusedDate={calendar.focusedDate}
           onSelectDate={calendar.selectDate}
+          onEventClick={handleEventClick}
         />
       )}
 
@@ -178,6 +192,13 @@ export function Calendar({ events }: CalendarProps) {
           onSelectDate={calendar.selectDate}
         />
       )}
+
+      {/* Event Detail Modal */}
+      <EventDetailModal
+        event={selectedEvent}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   )
 }

@@ -19,9 +19,10 @@ interface CalendarCellProps {
   isFocused: boolean
   isSelected: boolean
   onSelect: () => void
+  onEventClick?: (event: Event) => void
 }
 
-export function CalendarCell({ day, events, isFocused, isSelected, onSelect }: CalendarCellProps) {
+export function CalendarCell({ day, events, isFocused, isSelected, onSelect, onEventClick }: CalendarCellProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   // Show max 3 events, then "+X more"
@@ -69,23 +70,34 @@ export function CalendarCell({ day, events, isFocused, isSelected, onSelect }: C
       {/* Events list */}
       <div className="space-y-1">
         {visibleEvents.map((event) => (
-          <div
+          <button
             key={event.id}
+            onClick={(e) => {
+              e.stopPropagation()
+              onEventClick?.(event)
+            }}
             className={`
-              text-xs p-1.5 rounded border-l-2 transition-all
+              w-full text-left text-xs p-1.5 rounded border-l-2 transition-all
               ${getEventColor(event.event_type)}
               ${isHovered ? 'shadow-sm' : ''}
+              hover:shadow-md hover:scale-[1.02]
             `}
           >
             <div className="font-semibold truncate text-gray-900">
               {event.asx_code}
             </div>
             <div className="text-gray-600 truncate">{event.title}</div>
-          </div>
+          </button>
         ))}
 
         {remainingCount > 0 && (
-          <button className="text-xs text-primary font-medium hover:underline">
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onEventClick?.(events[3])
+            }}
+            className="text-xs text-primary font-medium hover:underline"
+          >
             +{remainingCount} more
           </button>
         )}

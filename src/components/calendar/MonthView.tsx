@@ -20,9 +20,10 @@ interface MonthViewProps {
   selectedDate: CalendarDate | null
   focusedDate: CalendarDate | null
   onSelectDate: (date: CalendarDate) => void
+  onEventClick?: (event: Event) => void
 }
 
-export function MonthView({ days, eventsByDate, selectedDate, focusedDate, onSelectDate }: MonthViewProps) {
+export function MonthView({ days, eventsByDate, selectedDate, focusedDate, onSelectDate, onEventClick }: MonthViewProps) {
   const dayNames = getDayNames()
 
   return (
@@ -63,6 +64,7 @@ export function MonthView({ days, eventsByDate, selectedDate, focusedDate, onSel
               isFocused={isFocused}
               isSelected={isSelected}
               onSelect={() => onSelectDate(day.date)}
+              onEventClick={onEventClick}
             />
           )
         })}
