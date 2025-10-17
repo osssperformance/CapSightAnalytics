@@ -71,9 +71,11 @@ export default async function CalendarPage() {
         </div>
       </nav>
 
-      {/* Calendar - Full height remaining space */}
-      <main className="flex-1 overflow-hidden">
-        <Calendar events={formattedEvents} />
+      {/* Calendar - Full height remaining space with padding */}
+      <main className="flex-1 overflow-hidden p-[50px]">
+        <div className="h-full bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+          <Calendar events={formattedEvents} />
+        </div>
       </main>
     </div>
   )
