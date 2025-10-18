@@ -33,7 +33,15 @@ export function Calendar({ events, totalEvents }: CalendarProps) {
   const monthName = getMonthName(calendar.month)
   const dayNames = getDayNames()
   const containerRef = useRef<HTMLDivElement>(null)
-  const [view, setView] = useState<ViewType>('month')
+
+  // Default to week view on mobile, month view on desktop
+  const [view, setView] = useState<ViewType>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768 ? 'week' : 'month'
+    }
+    return 'month'
+  })
+
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 

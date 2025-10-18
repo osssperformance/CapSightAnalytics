@@ -24,7 +24,8 @@
       "Bash(npm install:*)",
       "Bash(PGPASSWORD=Nv8qH4rNPPkWpT3a psql -h aws-0-ap-southeast-2.pooler.supabase.com -p 6543 -U postgres.rsjvbdnmnpmprrgtdqeb -d postgres -f supabase/migrations/20251018000001_update_event_dates.sql)",
       "Bash(npm run build:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(npx vercel:*)"
     ],
     "deny": [],
     "ask": []
