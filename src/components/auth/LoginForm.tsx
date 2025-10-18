@@ -8,6 +8,7 @@ export function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
+  const [accountType, setAccountType] = useState<'investor' | 'company'>('investor')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -20,7 +21,7 @@ export function LoginForm() {
     try {
       const endpoint = isSignUp ? '/auth/signup' : '/auth/login'
       const body = isSignUp
-        ? { email, password, fullName }
+        ? { email, password, fullName, accountType }
         : { email, password }
 
       const res = await fetch(endpoint, {
@@ -34,8 +35,9 @@ export function LoginForm() {
       if (data.error) {
         setError(data.error)
       } else {
-        // Redirect to calendar on successful login/signup
-        router.push('/calendar')
+        // Redirect based on role (or default to calendar for signup)
+        const redirectUrl = data.redirectUrl || '/calendar'
+        router.push(redirectUrl)
         router.refresh()
       }
     } catch (err) {
@@ -48,20 +50,58 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {isSignUp && (
-        <div>
-          <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-            Full Name
-          </label>
-          <input
-            id="fullName"
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required={isSignUp}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            placeholder="John Doe"
-          />
-        </div>
+        <>
+          <div>
+            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+              Full Name
+            </label>
+            <input
+              id="fullName"
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required={isSignUp}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="John Doe"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              I am a:
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setAccountType('investor')}
+                className={`px-4 py-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                  accountType === 'investor'
+                    ? 'border-primary bg-primary/5 text-primary'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                }`}
+              >
+                <div className="text-center">
+                  <div className="text-xl mb-1">👤</div>
+                  <div>Investor</div>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setAccountType('company')}
+                className={`px-4 py-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                  accountType === 'company'
+                    ? 'border-primary bg-primary/5 text-primary'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                }`}
+              >
+                <div className="text-center">
+                  <div className="text-xl mb-1">🏢</div>
+                  <div>Company Rep</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </>
       )}
 
       <div>

@@ -44,15 +44,15 @@ export function CalendarGrid({ days, dayNames, eventsByDate, selectedDate, focus
           const dateKey = `${day.date.year}-${String(day.date.month).padStart(2, '0')}-${String(day.date.day).padStart(2, '0')}`
           const eventsForDay = eventsByDate[dateKey] || []
 
-          const isFocused = focusedDate &&
+          const isFocused = !!(focusedDate &&
             focusedDate.year === day.date.year &&
             focusedDate.month === day.date.month &&
-            focusedDate.day === day.date.day
+            focusedDate.day === day.date.day)
 
-          const isSelected = selectedDate &&
+          const isSelected = !!(selectedDate &&
             selectedDate.year === day.date.year &&
             selectedDate.month === day.date.month &&
-            selectedDate.day === day.date.day
+            selectedDate.day === day.date.day)
 
           return (
             <CalendarCell

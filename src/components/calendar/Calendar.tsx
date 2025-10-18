@@ -23,11 +23,12 @@ interface Event {
 
 interface CalendarProps {
   events: Event[]
+  totalEvents?: number
 }
 
 type ViewType = 'month' | 'week' | 'list'
 
-export function Calendar({ events }: CalendarProps) {
+export function Calendar({ events, totalEvents }: CalendarProps) {
   const calendar = useCalendar()
   const monthName = getMonthName(calendar.month)
   const dayNames = getDayNames()
@@ -125,44 +126,11 @@ export function Calendar({ events }: CalendarProps) {
         onPrevious={handlePrevious}
         onNext={handleNext}
         onToday={calendar.goToToday}
+        view={view}
+        onViewChange={setView}
+        filteredCount={events.length}
+        totalCount={totalEvents}
       />
-
-      {/* View Switcher */}
-      <div className="flex items-center gap-2 px-6 py-3 bg-white border-b border-gray-200">
-        <button
-          onClick={() => setView('month')}
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
-            view === 'month'
-              ? 'bg-primary text-white'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-          aria-pressed={view === 'month'}
-        >
-          Month
-        </button>
-        <button
-          onClick={() => setView('week')}
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
-            view === 'week'
-              ? 'bg-primary text-white'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-          aria-pressed={view === 'week'}
-        >
-          Week
-        </button>
-        <button
-          onClick={() => setView('list')}
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
-            view === 'list'
-              ? 'bg-primary text-white'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-          aria-pressed={view === 'list'}
-        >
-          List
-        </button>
-      </div>
 
       {/* Render active view */}
       {view === 'month' && (

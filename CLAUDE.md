@@ -319,6 +319,29 @@ npm run deploy
 5. **Keep scope locked** - Prevent feature creep
 6. **Learn from mistakes** - Update Knowledge Base
 7. **Organize documentation** - Use standard /docs structure
+8. **Question non-standard patterns** - Challenge deviations from best practices before implementing
+
+---
+
+## ⚠️ DEVELOPMENT BEST PRACTICES
+
+### Authentication & User Management
+- **Single login page with role-based routing** - Use one `/login` page that redirects users based on their role after authentication
+  - ❌ BAD: Separate login pages (`/login`, `/company/login`, `/admin/login`)
+  - ✅ GOOD: Single `/login` with smart redirects based on user role
+  - Simpler UX, less code, standard SaaS pattern, more secure
+
+- **No magic links unless explicitly required** - Use email/password by default
+  - Magic links add complexity and potential security issues
+  - Only implement if user specifically requests passwordless auth
+
+### When to Question Implementation
+Before implementing tasks from specifications or development plans:
+1. **Does this follow modern best practices?**
+2. **Is there a simpler, more standard approach?**
+3. **Would this pattern be used by major SaaS products?**
+
+If the answer is "no" to any of these, **ask the user first** before implementing.
 
 ---
 

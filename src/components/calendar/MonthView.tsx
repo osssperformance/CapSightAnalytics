@@ -27,13 +27,13 @@ export function MonthView({ days, eventsByDate, selectedDate, focusedDate, onSel
   const dayNames = getDayNames()
 
   return (
-    <div className="flex-1 flex flex-col bg-white">
+    <div className="flex-1 flex flex-col bg-white dark:bg-gray-950 min-h-0">
       {/* Day names header */}
-      <div className="grid grid-cols-7 border-b border-gray-200">
+      <div className="grid grid-cols-7 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
         {dayNames.map((name) => (
           <div
             key={name}
-            className="py-3 text-center text-sm font-semibold text-gray-700 bg-gray-50"
+            className="py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900"
           >
             {name}
           </div>
@@ -41,20 +41,20 @@ export function MonthView({ days, eventsByDate, selectedDate, focusedDate, onSel
       </div>
 
       {/* Calendar grid - 6 rows of 7 days */}
-      <div className="flex-1 grid grid-cols-7 grid-rows-6 border-l border-t border-gray-200">
+      <div className="flex-1 grid grid-cols-7 auto-rows-fr border-l border-t border-gray-200 dark:border-gray-800 min-h-[600px]">
         {days.map((day, index) => {
           const dateKey = `${day.date.year}-${String(day.date.month).padStart(2, '0')}-${String(day.date.day).padStart(2, '0')}`
           const eventsForDay = eventsByDate[dateKey] || []
 
-          const isFocused = focusedDate &&
+          const isFocused = !!(focusedDate &&
             focusedDate.year === day.date.year &&
             focusedDate.month === day.date.month &&
-            focusedDate.day === day.date.day
+            focusedDate.day === day.date.day)
 
-          const isSelected = selectedDate &&
+          const isSelected = !!(selectedDate &&
             selectedDate.year === day.date.year &&
             selectedDate.month === day.date.month &&
-            selectedDate.day === day.date.day
+            selectedDate.day === day.date.day)
 
           return (
             <CalendarCell

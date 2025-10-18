@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { CalendarWithFilters } from '@/components/calendar/CalendarWithFilters'
+import { RoleSwitcher } from '@/components/dev/RoleSwitcher'
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
@@ -79,9 +81,9 @@ export default async function CalendarPage() {
   })
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       {/* Navigation */}
-      <nav className="border-b border-gray-200 bg-white flex-shrink-0">
+      <nav className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 flex-shrink-0">
         <div className="px-6">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-8">
@@ -92,25 +94,31 @@ export default async function CalendarPage() {
                 <Link href="/calendar" className="text-sm font-medium text-primary">
                   Calendar
                 </Link>
-                <Link href="/companies" className="text-sm font-medium text-gray-700 hover:text-primary">
+                <Link href="/companies" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary">
                   Companies
                 </Link>
-                <Link href="/watchlist" className="text-sm font-medium text-gray-700 hover:text-primary">
+                <Link href="/watchlist" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary">
                   Watchlist
                 </Link>
               </div>
             </div>
-            <UserMenu user={user} />
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <UserMenu user={user} />
+            </div>
           </div>
         </div>
       </nav>
 
       {/* Calendar - Full height remaining space with padding */}
-      <main className="flex-1 overflow-hidden p-[50px]">
-        <div className="h-full bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <main className="flex-1 overflow-auto p-[30px]">
+        <div className="min-h-full bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden flex flex-col">
           <CalendarWithFilters events={formattedEvents} commodities={allCommodities} />
         </div>
       </main>
+
+      {/* Dev Role Switcher */}
+      <RoleSwitcher />
     </div>
   )
 }

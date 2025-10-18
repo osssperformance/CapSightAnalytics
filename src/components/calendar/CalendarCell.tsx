@@ -32,12 +32,12 @@ export function CalendarCell({ day, events, isFocused, isSelected, onSelect, onE
   return (
     <div
       className={`
-        relative min-h-[120px] border-r border-b border-gray-200 p-2
-        ${!day.isCurrentMonth ? 'bg-gray-50' : 'bg-white'}
-        ${day.isToday ? 'bg-blue-50' : ''}
-        ${isSelected ? 'bg-primary/10 ring-2 ring-primary ring-inset' : ''}
-        ${isFocused && !isSelected ? 'ring-2 ring-gray-400 ring-inset' : ''}
-        hover:bg-gray-50 transition-colors cursor-pointer
+        relative h-full border-r border-b border-gray-200 dark:border-gray-800 p-2
+        ${!day.isCurrentMonth ? 'bg-gray-50 dark:bg-gray-900/50' : 'bg-white dark:bg-gray-950'}
+        ${day.isToday ? 'bg-blue-50 dark:bg-blue-900/20' : ''}
+        ${isSelected ? 'bg-primary/10 dark:bg-primary/20 ring-2 ring-primary ring-inset' : ''}
+        ${isFocused && !isSelected ? 'ring-2 ring-gray-400 dark:ring-gray-600 ring-inset' : ''}
+        hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors cursor-pointer
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -52,8 +52,12 @@ export function CalendarCell({ day, events, isFocused, isSelected, onSelect, onE
         <span
           className={`
             inline-flex items-center justify-center w-7 h-7 text-sm font-medium rounded-full
-            ${day.isToday ? 'bg-primary text-white' : ''}
-            ${!day.isCurrentMonth ? 'text-gray-400' : 'text-gray-900'}
+            ${day.isToday
+              ? 'bg-primary text-primary-foreground'
+              : !day.isCurrentMonth
+                ? 'text-gray-400 dark:text-gray-600'
+                : 'text-gray-900 dark:text-gray-100'
+            }
           `}
         >
           {day.date.day}
@@ -61,7 +65,7 @@ export function CalendarCell({ day, events, isFocused, isSelected, onSelect, onE
 
         {/* Event count badge */}
         {events.length > 0 && (
-          <span className="text-xs font-semibold text-gray-500">
+          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
             {events.length} {events.length === 1 ? 'event' : 'events'}
           </span>
         )}
@@ -83,10 +87,10 @@ export function CalendarCell({ day, events, isFocused, isSelected, onSelect, onE
               hover:shadow-md hover:scale-[1.02]
             `}
           >
-            <div className="font-semibold truncate text-gray-900">
+            <div className="font-semibold truncate text-gray-900 dark:text-gray-100">
               {event.asx_code}
             </div>
-            <div className="text-gray-600 truncate">{event.title}</div>
+            <div className="text-gray-600 dark:text-gray-400 truncate">{event.title}</div>
           </button>
         ))}
 
@@ -109,18 +113,18 @@ export function CalendarCell({ day, events, isFocused, isSelected, onSelect, onE
 // Helper function to get color based on event type
 function getEventColor(eventType: string): string {
   const colors: Record<string, string> = {
-    drilling_results: 'bg-blue-50 border-blue-500',
-    assay_results: 'bg-purple-50 border-purple-500',
-    exploration_update: 'bg-green-50 border-green-500',
-    jorc_resource: 'bg-orange-50 border-orange-500',
-    resource_update: 'bg-yellow-50 border-yellow-500',
-    production_update: 'bg-indigo-50 border-indigo-500',
-    feasibility_study: 'bg-pink-50 border-pink-500',
-    permits_approvals: 'bg-teal-50 border-teal-500',
-    capital_raise: 'bg-red-50 border-red-500',
-    quarterly_report: 'bg-cyan-50 border-cyan-500',
-    agm_egm: 'bg-gray-50 border-gray-500',
-    other: 'bg-slate-50 border-slate-500',
+    drilling_results: 'bg-blue-50 dark:bg-blue-900/30 border-blue-500 dark:border-blue-600',
+    assay_results: 'bg-purple-50 dark:bg-purple-900/30 border-purple-500 dark:border-purple-600',
+    exploration_update: 'bg-green-50 dark:bg-green-900/30 border-green-500 dark:border-green-600',
+    jorc_resource: 'bg-orange-50 dark:bg-orange-900/30 border-orange-500 dark:border-orange-600',
+    resource_update: 'bg-yellow-50 dark:bg-yellow-900/30 border-yellow-500 dark:border-yellow-600',
+    production_update: 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-500 dark:border-indigo-600',
+    feasibility_study: 'bg-pink-50 dark:bg-pink-900/30 border-pink-500 dark:border-pink-600',
+    permits_approvals: 'bg-teal-50 dark:bg-teal-900/30 border-teal-500 dark:border-teal-600',
+    capital_raise: 'bg-red-50 dark:bg-red-900/30 border-red-500 dark:border-red-600',
+    quarterly_report: 'bg-cyan-50 dark:bg-cyan-900/30 border-cyan-500 dark:border-cyan-600',
+    agm_egm: 'bg-gray-50 dark:bg-gray-800 border-gray-500 dark:border-gray-600',
+    other: 'bg-slate-50 dark:bg-slate-800 border-slate-500 dark:border-slate-600',
   }
 
   return colors[eventType] || colors.other
