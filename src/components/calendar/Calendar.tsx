@@ -34,10 +34,10 @@ export function Calendar({ events, totalEvents }: CalendarProps) {
   const dayNames = getDayNames()
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Default to week view on mobile, month view on desktop
+  // Default to list view on mobile, month view on desktop
   const [view, setView] = useState<ViewType>(() => {
     if (typeof window !== 'undefined') {
-      return window.innerWidth < 768 ? 'week' : 'month'
+      return window.innerWidth < 768 ? 'list' : 'month'
     }
     return 'month'
   })
